@@ -25,11 +25,25 @@ func (p *Products) ToJSON(w io.Writer) error {
 	return encoder.Encode(p)
 }
 
+func (p *Product) FromJSON(r io.Reader) error {
+	decoder := json.NewDecoder(r)
+	return decoder.Decode(p)
+}
+
 func GetProducts()  Products {
 	return productList
 }
 
+func AddProducts(p *Product) {
+	p.ID = getNextID()
+	productList = append(productList, p)
 
+}
+
+func getNextID() int {
+	lastProd := productList[len(productList)-1]
+	return lastProd.ID + 1
+}
 
 var productList = []*Product {
 	&Product{
